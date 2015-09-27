@@ -59,7 +59,7 @@ public class AddStateNodeDialog extends JDialog {
         buttonAdd.addActionListener(e -> {
             StateNode node = new StateNode(((String) charactersCombo.getSelectedItem()).charAt(0),
                     acceptStateCheck.isSelected(),
-                    startStateCheck.isSelected(),
+                    automaton.hasStartNode() ? false : startStateCheck.isSelected(),
                     new LinkedList<StateNode>(),
                     mousePosition);
             automaton.addStateNode(node);
