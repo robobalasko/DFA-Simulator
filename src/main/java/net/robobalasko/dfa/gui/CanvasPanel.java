@@ -18,7 +18,7 @@ public class CanvasPanel extends JPanel {
     private StateNode firstSelected = null;
     private StateNode secondSelected = null;
 
-    public CanvasPanel(MainFrame mainFrame, Automaton automaton) {
+    public CanvasPanel(final MainFrame mainFrame, final Automaton automaton) {
         this.automaton = automaton;
 
         addMouseListener(new MouseAdapter() {

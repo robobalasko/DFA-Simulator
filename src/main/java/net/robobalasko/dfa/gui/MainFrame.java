@@ -10,6 +10,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends JFrame {
 
@@ -17,7 +19,7 @@ public class MainFrame extends JFrame {
 
     private JButton checkButton;
 
-    public MainFrame(Automaton automaton) throws HeadlessException {
+    public MainFrame(final Automaton automaton) throws HeadlessException {
         super("DFA Simulator");
         this.automaton = automaton;
 
@@ -34,7 +36,7 @@ public class MainFrame extends JFrame {
         JPanel checkInputPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         containerPanel.add(checkInputPanel);
 
-        JTextField inputText = new JTextField(40);
+        final JTextField inputText = new JTextField(40);
         Document document = inputText.getDocument();
         document.addDocumentListener(new DocumentListener() {
             @Override
@@ -56,16 +58,19 @@ public class MainFrame extends JFrame {
 
         checkButton = new JButton("Check");
         checkButton.setEnabled(false);
-        checkButton.addActionListener(al -> {
-            try {
-                JOptionPane.showMessageDialog(this,
-                        automaton.acceptsString(inputText.getText())
-                                ? "Input accepted."
-                                : "Input rejected.");
-            } catch (StartNodeMissingException e) {
-                JOptionPane.showMessageDialog(this, "Missing start node.");
-            } catch (NodeConnectionMissingException e) {
-                JOptionPane.showMessageDialog(this, "Not a good string. Automat doesn't accept it.");
+        checkButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    JOptionPane.showMessageDialog(MainFrame.this,
+                            automaton.acceptsString(inputText.getText())
+                                    ? "Input accepted."
+                                    : "Input rejected.");
+                } catch (StartNodeMissingException ex) {
+                    JOptionPane.showMessageDialog(MainFrame.this, "Missing start node.");
+                } catch (NodeConnectionMissingException ex) {
+                    JOptionPane.showMessageDialog(MainFrame.this, "Not a good string. Automat doesn't accept it.");
+                }
             }
         });
         checkInputPanel.add(checkButton);

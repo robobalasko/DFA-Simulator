@@ -7,6 +7,8 @@ import net.robobalasko.dfa.core.StateNode;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 public class AddStateNodeDialog extends JDialog {
@@ -25,7 +27,7 @@ public class AddStateNodeDialog extends JDialog {
 
     private JCheckBox startStateCheck;
 
-    public AddStateNodeDialog(Frame owner, boolean modal, Automaton automaton, Point mousePosition) {
+    public AddStateNodeDialog(Frame owner, boolean modal, final Automaton automaton, final Point mousePosition) {
         super(owner, modal);
         this.automaton = automaton;
 
@@ -36,7 +38,7 @@ public class AddStateNodeDialog extends JDialog {
         containerPanel.setBorder(new EmptyBorder(20, 20, 20, 20));
         setContentPane(containerPanel);
 
-        JComboBox charactersCombo = new JComboBox(allowedChars);
+        final JComboBox charactersCombo = new JComboBox(allowedChars);
         charactersCombo.setEditable(false);
         containerPanel.add(charactersCombo);
 
@@ -56,17 +58,20 @@ public class AddStateNodeDialog extends JDialog {
 
         JButton buttonAdd = new JButton("Add");
 
-        buttonAdd.addActionListener(e -> {
-            StateNode node = new StateNode(((String) charactersCombo.getSelectedItem()).charAt(0),
-                    automaton.hasStartNode() ? false : startStateCheck.isSelected(),
-                    acceptStateCheck.isSelected(),
-                    new LinkedList<StateNode>(),
-                    mousePosition);
-            try {
-                automaton.addStateNode(node);
-                setVisible(false);
-            } catch (MultipleStartNodesException e1) {
-                JOptionPane.showMessageDialog(this, "You cannot have multiple start nodes.");
+        buttonAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                StateNode node = new StateNode(((String) charactersCombo.getSelectedItem()).charAt(0),
+                        automaton.hasStartNode() ? false : startStateCheck.isSelected(),
+                        acceptStateCheck.isSelected(),
+                        new LinkedList<StateNode>(),
+                        mousePosition);
+                try {
+                    automaton.addStateNode(node);
+                    setVisible(false);
+                } catch (MultipleStartNodesException e1) {
+                    JOptionPane.showMessageDialog(AddStateNodeDialog.this, "You cannot have multiple start nodes.");
+                }
             }
         });
 
@@ -74,8 +79,11 @@ public class AddStateNodeDialog extends JDialog {
 
         JButton buttonCancel = new JButton("Cancel");
 
-        buttonCancel.addActionListener(e -> {
-            setVisible(false);
+        buttonCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+            }
         });
 
         buttonsPanel.add(buttonCancel);
