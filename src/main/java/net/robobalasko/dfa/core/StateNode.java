@@ -14,6 +14,9 @@ public class StateNode {
     private final List<StateNode> connections;
     private final Point position;
 
+    private boolean hovered;
+    private boolean active;
+
     /**
      * Constructor.
      *  @param name the name of the node
@@ -108,7 +111,42 @@ public class StateNode {
         return connections;
     }
 
+    /**
+     * @return the position of the node.
+     */
     public Point getPosition() {
         return position;
+    }
+
+    /**
+     * @return true, if the node is hovered.
+     */
+    public boolean isHovered() {
+        return hovered;
+    }
+
+    /**
+     * Sets the node to a hovered state.
+     *
+     * @param hovered true or false based on the expected state.
+     */
+    public void setHovered(boolean hovered) {
+        this.hovered = hovered;
+    }
+
+    /**
+     * @return true, if the node is active.
+     */
+    public boolean isActive() {
+        return active;
+    }
+
+    /**
+     * Sets the current node as active.
+     *
+     * @param active true or false based on the expected state.
+     */
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
