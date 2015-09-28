@@ -1,6 +1,7 @@
 package net.robobalasko.dfa.gui;
 
 import net.robobalasko.dfa.core.Automaton;
+import net.robobalasko.dfa.core.MultipleStartNodesException;
 import net.robobalasko.dfa.core.StateNode;
 
 import javax.swing.*;
@@ -58,12 +59,16 @@ public class AddStateNodeDialog extends JDialog {
 
         buttonAdd.addActionListener(e -> {
             StateNode node = new StateNode(((String) charactersCombo.getSelectedItem()).charAt(0),
-                    acceptStateCheck.isSelected(),
                     automaton.hasStartNode() ? false : startStateCheck.isSelected(),
+                    acceptStateCheck.isSelected(),
                     new LinkedList<StateNode>(),
                     mousePosition);
-            automaton.addStateNode(node);
-            setVisible(false);
+            try {
+                automaton.addStateNode(node);
+                setVisible(false);
+            } catch (MultipleStartNodesException e1) {
+                JOptionPane.showMessageDialog(this, "You cannot have multiple start nodes.");
+            }
         });
 
         buttonsPanel.add(buttonAdd);
@@ -76,6 +81,7 @@ public class AddStateNodeDialog extends JDialog {
 
         buttonsPanel.add(buttonCancel);
 
+        setLocationRelativeTo(null);
         setResizable(false);
         pack();
     }

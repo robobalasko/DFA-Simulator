@@ -1,6 +1,5 @@
 package net.robobalasko.dfa.gui;
 
-import jdk.nashorn.internal.runtime.regexp.joni.constants.NodeStatus;
 import net.robobalasko.dfa.core.Automaton;
 import net.robobalasko.dfa.core.StateNode;
 
@@ -15,14 +14,48 @@ public class CanvasPanel extends JPanel {
 
     private final Automaton automaton;
 
+    private boolean connecting;
+    private StateNode firstSelected = null;
+    private StateNode secondSelected = null;
+
     public CanvasPanel(MainFrame mainFrame, Automaton automaton) {
         this.automaton = automaton;
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                AddStateNodeDialog addStateNodeDialog = new AddStateNodeDialog(mainFrame, true, automaton, e.getPoint());
-                addStateNodeDialog.setVisible(true);
+                if (!automaton.hasHoveredNode()) {
+                    firstSelected = null;
+                    secondSelected = null;
+                    connecting = false;
+                    AddStateNodeDialog addStateNodeDialog = new AddStateNodeDialog(mainFrame, true, automaton, e.getPoint());
+                    addStateNodeDialog.setVisible(true);
+                } else {
+                    StateNode node = automaton.getNodeByPosition(e.getPoint());
+
+                    if (node != null && !connecting) {
+                        node.setActive(true);
+                        firstSelected = node;
+                        connecting = true;
+                    } else {
+                        node.setActive(true);
+                        secondSelected = node;
+                        firstSelected.addConnection(secondSelected);
+                        firstSelected.setActive(false);
+                        secondSelected.setActive(false);
+                        firstSelected = null;
+                        secondSelected = null;
+                        connecting = false;
+                    }
+                }
+            }
+        });
+
+        addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                automaton.markHoveredNode(e.getPoint());
+                repaint();
             }
         });
     }
@@ -39,7 +72,50 @@ public class CanvasPanel extends JPanel {
 
         for (StateNode node : automaton.getNodes()) {
             if (node.isStartNode()) {
-                drawStartNode(node, g);
+                g.setColor(Color.BLUE);
+            }
+
+            if (node.isHovered()) {
+                g.setColor(Color.RED);
+            }
+
+            if (node.isAcceptNode()) {
+                if (node.isStartNode() && !node.isHovered()) {
+                    g.setColor(Color.MAGENTA);
+                }
+
+                if (node.isActive()) {
+                    g.setColor(Color.ORANGE);
+                }
+
+                g.drawOval(node.getPosition().x, node.getPosition().y, StateNode.NODE_SIZE, StateNode.NODE_SIZE);
+                g.drawOval(node.getPosition().x - StateNode.SPEC_NODE_OFFSET,
+                        node.getPosition().y - StateNode.SPEC_NODE_OFFSET,
+                        StateNode.NODE_SIZE + StateNode.SPEC_NODE_OFFSET * 2,
+                        StateNode.NODE_SIZE + StateNode.SPEC_NODE_OFFSET * 2);
+                g.drawString(String.valueOf(node.getName()), node.getPosition().x, node.getPosition().y);
+            } else {
+                if (!node.isHovered() && !node.isAcceptNode() || node.isStartNode()) {
+                    g.setColor(Color.BLACK);
+                }
+
+                if (node.isActive()) {
+                    g.setColor(Color.ORANGE);
+                }
+
+                g.drawOval(node.getPosition().x, node.getPosition().y, StateNode.NODE_SIZE, StateNode.NODE_SIZE);
+                g.drawString(String.valueOf(node.getName()), node.getPosition().x, node.getPosition().y);
+            }
+        }
+
+        for (StateNode node : automaton.getNodes()) {
+            java.util.List<StateNode> nodesConnections = node.getConnections();
+
+            for (StateNode connection : nodesConnections) {
+                g.drawLine(node.getPosition().x + StateNode.NODE_SIZE / 2,
+                        node.getPosition().y + StateNode.NODE_SIZE / 2,
+                        connection.getPosition().x + StateNode.NODE_SIZE / 2,
+                        connection.getPosition().y + StateNode.NODE_SIZE / 2);
             }
         }
     }
@@ -61,13 +137,11 @@ public class CanvasPanel extends JPanel {
         }
     }
 
-    public void drawStartNode(StateNode node, Graphics g) {
-        g.setColor(Color.BLUE);
-        g.drawOval(node.getPosition().x, node.getPosition().y, StateNode.NODE_SIZE, StateNode.NODE_SIZE);
-        g.drawOval(node.getPosition().x - StateNode.SPEC_NODE_OFFSET,
-                node.getPosition().y - StateNode.SPEC_NODE_OFFSET,
-                StateNode.NODE_SIZE + StateNode.SPEC_NODE_OFFSET * 2,
-                StateNode.NODE_SIZE + StateNode.SPEC_NODE_OFFSET * 2);
-        g.drawString(String.valueOf(node.getName()), node.getPosition().x, node.getPosition().y);
+    public void drawAcceptingNode(StateNode node, Graphics g) {
+        //
+    }
+
+    public void drawRegularNode(StateNode node, Graphics g) {
+        //
     }
 }
