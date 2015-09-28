@@ -18,7 +18,7 @@ public class AutomatonTest {
 
     @Before
     public void setUp() {
-        automaton = new Automaton(new LinkedList<>());
+        automaton = new Automaton(new LinkedList<StateNode>());
     }
 
     @Test(expected = StartNodeMissingException.class)
@@ -31,7 +31,7 @@ public class AutomatonTest {
     @Test
     public void testAcceptStringNodeConnectionMissing()
             throws NodeConnectionMissingException, StartNodeMissingException, MultipleStartNodesException {
-        StateNode startNode = new StateNode('a', true, true, new LinkedList<>(), null);
+        StateNode startNode = new StateNode('a', true, true, new LinkedList<StateNode>(), null);
         automaton.addStateNode(startNode);
         String input = "abcdef";
         assertFalse(automaton.acceptsString(input));
@@ -39,14 +39,14 @@ public class AutomatonTest {
 
     @Test
     public void testHasStartNodeFails() throws MultipleStartNodesException {
-        StateNode node = new StateNode('a', false, true, new LinkedList<>(), null);
+        StateNode node = new StateNode('a', false, true, new LinkedList<StateNode>(), null);
         automaton.addStateNode(node);
         assertFalse(automaton.hasStartNode());
     }
 
     @Test
     public void testHasStartNodeSucceeds() throws MultipleStartNodesException {
-        StateNode node = new StateNode('a', true, false, new LinkedList<>(), null);
+        StateNode node = new StateNode('a', true, false, new LinkedList<StateNode>(), null);
         automaton.addStateNode(node);
         assertTrue(automaton.hasStartNode());
     }
@@ -54,7 +54,7 @@ public class AutomatonTest {
     @Test(expected = StartNodeMissingException.class)
     public void testGetStartNodeFails()
             throws StartNodeMissingException, MultipleStartNodesException {
-        StateNode node = new StateNode('a', false, false, new LinkedList<>(), null);
+        StateNode node = new StateNode('a', false, false, new LinkedList<StateNode>(), null);
         automaton.addStateNode(node);
         automaton.getStartNode();
     }
@@ -62,7 +62,7 @@ public class AutomatonTest {
     @Test
     public void testGetStartNodeSucceeds()
             throws StartNodeMissingException, MultipleStartNodesException {
-        StateNode node = new StateNode('a', true, false, new LinkedList<>(), null);
+        StateNode node = new StateNode('a', true, false, new LinkedList<StateNode>(), null);
         automaton.addStateNode(node);
         StateNode foundNode = automaton.getStartNode();
         assertNotNull(foundNode);
