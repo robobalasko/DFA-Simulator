@@ -1,5 +1,7 @@
 package net.robobalasko.dfa.core;
 
+import net.robobalasko.dfa.core.exceptions.NodeConnectionMissingException;
+
 import java.awt.*;
 import java.util.List;
 

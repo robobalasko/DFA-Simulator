@@ -1,8 +1,8 @@
 package net.robobalasko.dfa.gui;
 
 import net.robobalasko.dfa.core.Automaton;
-import net.robobalasko.dfa.core.NodeConnectionMissingException;
-import net.robobalasko.dfa.core.StartNodeMissingException;
+import net.robobalasko.dfa.core.exceptions.NodeConnectionMissingException;
+import net.robobalasko.dfa.core.exceptions.StartNodeMissingException;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

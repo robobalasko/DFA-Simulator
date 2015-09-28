@@ -1,12 +1,11 @@
 package net.robobalasko.dfa.gui;
 
 import net.robobalasko.dfa.core.Automaton;
-import net.robobalasko.dfa.core.MultipleStartNodesException;
+import net.robobalasko.dfa.core.exceptions.MultipleStartNodesException;
 import net.robobalasko.dfa.core.StateNode;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.nimbus.State;
 import java.awt.*;
 import java.util.LinkedList;
 

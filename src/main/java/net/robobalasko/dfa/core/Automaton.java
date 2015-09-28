@@ -1,7 +1,9 @@
 package net.robobalasko.dfa.core;
 
-import javax.swing.plaf.nimbus.State;
-import javax.swing.text.Position;
+import net.robobalasko.dfa.core.exceptions.MultipleStartNodesException;
+import net.robobalasko.dfa.core.exceptions.NodeConnectionMissingException;
+import net.robobalasko.dfa.core.exceptions.StartNodeMissingException;
+
 import java.awt.*;
 import java.util.List;
 

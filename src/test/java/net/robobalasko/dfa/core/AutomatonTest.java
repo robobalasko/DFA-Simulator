@@ -2,7 +2,9 @@ package net.robobalasko.dfa.core;
 
 import static org.junit.Assert.*;
 
-import com.sun.org.apache.xerces.internal.xs.LSInputList;
+import net.robobalasko.dfa.core.exceptions.MultipleStartNodesException;
+import net.robobalasko.dfa.core.exceptions.NodeConnectionMissingException;
+import net.robobalasko.dfa.core.exceptions.StartNodeMissingException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
