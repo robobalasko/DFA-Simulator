@@ -1,3 +1,5 @@
+https://travis-ci.org/robobalasko/DFA-Simulator.svg?branch=master
+
 # DFA-Simulator
 A simulator of deterministic finite automata.
 
@@ -6,4 +8,4 @@ The GUI of the app is still being developed. If you want to help in any way, sim
 you want. Your help is much appreciated. All of the collaborators will be listed in this readme file.
 
 ### Authors
-- RÛbert Balaöko
+- R√≥bert Bala≈°ko
