@@ -1,4 +1,4 @@
-![Travis CI](https://travis-ci.org/robobalasko/DFA-Simulator.svg?branch=master) [Builds](https://travis-ci.org/robobalasko/DFA-Simulator)
+![Travis CI](https://travis-ci.org/robobalasko/DFA-Simulator.svg?branch=master)<br> [Builds](https://travis-ci.org/robobalasko/DFA-Simulator)
 
 # DFA-Simulator
 A simulator of deterministic finite automata.
