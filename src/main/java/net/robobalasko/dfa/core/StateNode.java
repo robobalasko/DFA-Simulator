@@ -1,5 +1,6 @@
 package net.robobalasko.dfa.core;
 
+import net.robobalasko.dfa.core.exceptions.MultipleStartNodesException;
 import net.robobalasko.dfa.core.exceptions.NodeConnectionMissingException;
 
 import java.awt.*;
@@ -21,11 +22,12 @@ public class StateNode {
 
     /**
      * Constructor.
-     *  @param name the name of the node
+     *
+     * @param name the name of the node
      * @param startNode specifies whether this node is the starting node
      * @param acceptNode specified whether this node is an accepting node
      * @param connections a linked list of nodes connected to this one
-     * @param position
+     * @param position position of the state node
      */
     public StateNode(char name, boolean startNode, boolean acceptNode, List<StateNode> connections, Point position) {
         this.name = name;
@@ -40,7 +42,11 @@ public class StateNode {
      *
      * @param node node to be connected to the current one.
      */
-    public void addConnection(StateNode node) {
+    public void addConnection(StateNode node) throws MultipleStartNodesException {
+        if (this.isStartNode() && node.isStartNode()) {
+            throw new MultipleStartNodesException();
+        }
+
         connections.add(node);
     }
 
