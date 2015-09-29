@@ -2,6 +2,7 @@ package net.robobalasko.dfa.gui;
 
 import net.robobalasko.dfa.core.Automaton;
 import net.robobalasko.dfa.core.StateNode;
+import net.robobalasko.dfa.core.exceptions.MultipleStartNodesException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +41,12 @@ public class CanvasPanel extends JPanel {
                     } else {
                         node.setActive(true);
                         secondSelected = node;
-                        firstSelected.addConnection(secondSelected);
+                        try {
+                            firstSelected.addConnection(secondSelected);
+                        } catch (MultipleStartNodesException e1) {
+                            JOptionPane.showMessageDialog(CanvasPanel.this.getParent(), "You cannot have multiple start nodes.");
+                            return;
+                        }
                         firstSelected.setActive(false);
                         secondSelected.setActive(false);
                         firstSelected = null;
